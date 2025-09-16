@@ -1,0 +1,37 @@
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'ubuntu-lastest'
+
+variables:
+  AZ_ORG: 'Jocampo0909'
+  AZ_PROY: 'Mi Tablero'
+  AZ_FEED: 'pip-feed'
+  AZ_USER: 'az'
+  PACKAGES_FILE: 'packages_to_approve.txt'
+
+steps:
+- checkout: self
+  persistCredentials: true
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install twine pip-audit
+  displayName: 'Instalar herramientas (twine, pip-audit)'
+
+- script: |
+    python publicar_paquetes.py
+  displayName: 'Descargar, auditar y publicar paquetes'
+  env:
+    AZ_ORG: ${AZ_ORG}
+    AZ_PROY: ${AZ_PROY}
+    AZ_FEED: ${AZ_FEED}
+    AZ_USER: ${AZ_USER}
+    PACKAGES_FILE: ${PACKAGES_FILE}
+    AZURE_PATH: ${AZURE_PATH}

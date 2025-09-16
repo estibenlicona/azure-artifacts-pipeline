@@ -1,0 +1,5 @@
+# Lista de paquetes permitidos con sus versiones exactas
+# Formato: paquete==versione
+requests==2.31.0
+numpy==1.26.0
+pandas==2.2.1
